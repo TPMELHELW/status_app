@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "396938660447",
+    "project_id": "el-mensaje-eterno",
+    "storage_bucket": "el-mensaje-eterno.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396938660447:android:ef8e3ba3cbdc3ee3c429ea",
+        "android_client_info": {
+          "package_name": "com.example.status_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq_kSsVk1j5A_sXERC8aXO1hF_S8tbAIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
