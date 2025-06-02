@@ -7,6 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+// import 'package:status_app/features/auth/screen/login_screen/login_screen.dart';
+// import 'package:status_app/features/auth/screen/signup_screen/verify_screen.dart';
+// import 'package:status_app/features/home/screens/home_screen.dart';
 // import 'package:get_storage/get_storage.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
@@ -14,23 +17,7 @@ class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
   // final storage = GetStorage();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // void screenRedirect() {
-  //   if (_auth.currentUser != null) {
-  //     if (_auth.currentUser?.emailVerified ?? false) {
-  //       Get.offAll(() => const NavigationMenuScreen());
-  //     } else {
-  //       Get.offAll(() => VerifyScreen(
-  //             email: _auth.currentUser!.email!,
-  //           ));
-  //     }
-  //   } else {
-  //     storage.writeIfNull("isFirstTime", true);
-  //     storage.read("isFirstTime")
-  //         ? Get.offAll(() => const OnBoardingScreen())
-  //         : Get.offAll(() => const LoginScreen());
-  //   }
-  // }
+  final currentUser = FirebaseAuth.instance.currentUser;
 
   Future<UserCredential> signUpWithEmailAndPassword(
     String email,
@@ -108,12 +95,11 @@ class AuthRepository extends GetxController {
   //   }
   // }
 
-  // @override
-  // void onReady() {
-  //   // FlutterNativeSplash.remove();
-  //   SystemChrome.setSystemUIOverlayStyle(
-  //       const SystemUiOverlayStyle(statusBarColor: Colors.blue));
-  //   screenRedirect();
-  //   super.onReady();
-  // }
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

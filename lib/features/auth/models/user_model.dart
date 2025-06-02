@@ -24,6 +24,7 @@ class UserModel {
       // 'FirstName': firstName,
       // 'LastName': lastName,
       'UserName': userName,
+      'Name': name,
       'Email': email,
       // 'PhoneNumber': number,
       // 'ProfilePicture': profilePicture,

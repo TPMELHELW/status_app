@@ -1,16 +1,19 @@
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.g.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:status_app/core/common/normal_button_widget.dart';
 import 'package:status_app/core/common/normal_text_field_widget.dart';
 import 'package:status_app/core/constants/colors.dart';
+import 'package:status_app/features/home/controller/home_controller.dart';
 
 class MoodWidget extends StatelessWidget {
   const MoodWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final HomeController controller = Get.put(HomeController());
     return Container(
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.all(20),
@@ -30,6 +33,7 @@ class MoodWidget extends StatelessWidget {
                 NormalTextFieldWidget(
                   text: 'Your Friend UserName...',
                   icon: Iconsax.user,
+                  controller: controller.search,
                 ),
 
                 NormalButtonWidget(text: 'Search'),

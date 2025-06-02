@@ -1,11 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:status_app/core/functions/snack_bar.dart';
+import 'package:status_app/core/routes/app_routes.dart';
 import 'package:status_app/features/auth/models/user_model.dart';
 
-class UserRepository {
+class UserRepository extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance.currentUser;
+  void screenRedirect() {
+    if (_auth != null) {
+      if (_auth.emailVerified) {
+        Get.offAllNamed(AppRoutes.home);
+      } else {
+        Get.offAllNamed(AppRoutes.verify);
+      }
+    } else {
+      Get.offAllNamed(AppRoutes.login);
+    }
+  }
 
   Future<void> saveUserInf(UserModel user) async {
     try {
@@ -50,6 +63,15 @@ class UserRepository {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  @override
+  void onReady() {
+    // FlutterNativeSplash.remove();
+    // SystemChrome.setSystemUIOverlayStyle(
+    //     const SystemUiOverlayStyle(statusBarColor: Colors.blue));
+    screenRedirect();
+    super.onReady();
   }
 
   // Future<String> uploadProfileImage(String path, XFile file) async {

@@ -1,14 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:status_app/core/routes/app_pages.dart';
 import 'package:status_app/core/theme/theme.dart';
-import 'package:status_app/features/auth/screen/login_screen.dart';
-import 'package:status_app/features/home/screens/home_screen.dart';
+import 'package:status_app/data/user_repository.dart';
 import 'package:status_app/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ).then((_) {
+    Get.put(UserRepository());
+  });
   runApp(MyApp());
 }
 
@@ -18,10 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      getPages: AppPages.pages,
       themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: LoginScreen(),
+      home: Center(child: CircularProgressIndicator()),
     );
   }
 }
