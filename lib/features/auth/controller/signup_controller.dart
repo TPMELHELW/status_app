@@ -8,6 +8,7 @@ import 'package:status_app/core/routes/app_routes.dart';
 import 'package:status_app/data/auth_repository.dart';
 import 'package:status_app/data/user_repository.dart';
 import 'package:status_app/features/auth/models/user_model.dart';
+import 'package:status_app/features/mood/models/mood_model.dart';
 
 class SignupController extends GetxController {
   static SignupController get instance => Get.find<SignupController>();
@@ -42,6 +43,7 @@ class SignupController extends GetxController {
         name: fullName.text.trim(),
         userName: generateUsername(),
         email: email.text.trim(),
+        mood: [MoodModel(mood: 'Neutral', timestamp: DateTime.now())],
       );
       await _userRepository.saveUserInf(userData);
       Get.offAllNamed(AppRoutes.verify);

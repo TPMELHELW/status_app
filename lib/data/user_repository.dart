@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:status_app/core/routes/app_routes.dart';
 import 'package:status_app/features/auth/models/user_model.dart';
 
 class UserRepository extends GetxController {
+  static UserRepository get instance => Get.find<UserRepository>();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance.currentUser;
   void screenRedirect() {
@@ -30,13 +33,17 @@ class UserRepository extends GetxController {
 
   Future<UserModel> getUserData() async {
     try {
+      // log(_auth!.uid);
       final data = await _db.collection('Users').doc(_auth!.uid).get();
+      // print(data.);
       if (data.exists) {
+        // print('exist');
         return UserModel.fromSnapshot(data);
       } else {
         return UserModel.empty();
       }
     } catch (e) {
+      // print('error');
       throw Exception(e);
     }
   }

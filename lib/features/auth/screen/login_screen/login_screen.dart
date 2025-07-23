@@ -6,6 +6,8 @@ import 'package:status_app/core/common/normal_button_widget.dart';
 import 'package:status_app/core/common/normal_text_field_widget.dart';
 import 'package:status_app/core/constants/colors.dart';
 import 'package:status_app/core/routes/app_routes.dart';
+import 'package:status_app/core/validators/validation.dart';
+import 'package:status_app/data/auth_repository.dart';
 import 'package:status_app/features/auth/controller/login_controller.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -23,16 +25,21 @@ class LoginScreen extends StatelessWidget {
           children: [
             Lottie.asset('assets/animation/mood.json', repeat: false),
             Form(
+              key: controller.formState,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   NormalTextFieldWidget(
+                    validator: (value) =>
+                        AppFieldValidator.validateEmail(value),
                     text: 'Email',
                     icon: Iconsax.user,
                     controller: controller.email,
                   ),
                   SizedBox(height: 10),
                   NormalTextFieldWidget(
+                    validator: (value) =>
+                        AppFieldValidator.validatePassword(value),
                     text: 'Password',
                     icon: Iconsax.password_check,
                     controller: controller.password,
@@ -47,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                           minimumSize: Size(0, 0),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
-                        onPressed: () {},
+                        onPressed: () => Get.toNamed(AppRoutes.forget),
                         child: Text(
                           'Forget Password?',
                           // style: Theme.of(context).textTheme.bodyMedium,
@@ -57,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   NormalButtonWidget(
+                    onPress: () async => await controller.login(),
                     text: 'Login',
                     statusRequest: controller.statusRequest,
                   ),
@@ -81,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                     ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                   ),
                   TextButton(
-                    onPressed: () => Get.offAllNamed(AppRoutes.signup),
+                    onPressed: () => print(AuthRepository().currentUser),
                     child: Text('SignUp'),
                   ),
                 ],

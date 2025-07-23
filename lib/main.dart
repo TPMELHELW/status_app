@@ -2,12 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:status_app/core/routes/app_pages.dart';
+import 'package:status_app/core/services/shared_prefrences_services.dart';
 import 'package:status_app/core/theme/theme.dart';
 import 'package:status_app/data/user_repository.dart';
 import 'package:status_app/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Get.putAsync(() => UserService().init());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then((_) {

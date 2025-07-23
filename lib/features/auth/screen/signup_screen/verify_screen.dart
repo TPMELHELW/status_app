@@ -29,7 +29,11 @@ class VerifyScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.labelMedium,
             ),
             SizedBox(height: 150),
-            NormalButtonWidget(text: 'Resend'),
+            NormalButtonWidget(
+              text: 'Resend',
+              onPress: () => controller.sendEmailVerification(),
+              statusRequest: controller.statusRequest,
+            ),
           ],
         ),
       ),

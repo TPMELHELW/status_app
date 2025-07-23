@@ -2,6 +2,8 @@
 // import 'package:e_commerce/features/authentication/screens/on_boarding_screen/on_boarding_screen.dart';
 // import 'package:e_commerce/features/authentication/screens/signup_screen/verify_screen.dart';
 // import 'package:e_commerce/features/shop/screens/navigation_menu_screen/navigation_menu_screen.dart';
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -44,7 +46,11 @@ class AuthRepository extends GetxController {
 
   Future<void> logInWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      final user = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      log(user.toString());
     } on FirebaseAuthException catch (e) {
       throw FirebaseAuthException(code: e.code);
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:status_app/core/constants/colors.dart';
 import 'package:status_app/core/constants/enums.dart';
 
@@ -26,7 +27,7 @@ class NormalButtonWidget extends StatelessWidget {
       onPressed: onPress,
       child: Obx(
         () => statusRequest.value == StatusRequest.loading
-            ? const Center(child: CircularProgressIndicator())
+            ? Lottie.asset('assets/animation/loading.json', height: 50)
             : Text(text),
       ),
     );

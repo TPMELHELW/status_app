@@ -1,74 +1,99 @@
 import 'package:animated_emoji/emoji.dart';
-import 'package:animated_emoji/emojis.g.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:status_app/core/common/normal_button_widget.dart';
-import 'package:status_app/core/common/normal_text_field_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:status_app/core/constants/colors.dart';
-import 'package:status_app/features/home/controller/home_controller.dart';
+import 'package:status_app/core/routes/app_routes.dart';
+import 'package:status_app/features/mood/controller/mood_controller.dart';
 
 class MoodWidget extends StatelessWidget {
   const MoodWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HomeController controller = Get.put(HomeController());
-    return Container(
-      margin: EdgeInsets.all(16),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.accent,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 2)],
-      ),
-      child: Column(
-        spacing: 10,
-        children: [
-          Form(
+    final MoodController controller = Get.put(MoodController());
+    return ListView(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: controller.moodByDay.entries.map((entry) {
+        return GestureDetector(
+          onTap: () => Get.toNamed(AppRoutes.mood),
+          child: Container(
+            margin: EdgeInsets.all(16),
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.darkerGrey,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [BoxShadow(color: AppColors.black, blurRadius: 2)],
+            ),
             child: Column(
-              spacing: 5,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                NormalTextFieldWidget(
-                  text: 'Your Friend UserName...',
-                  icon: Iconsax.user,
-                  controller: controller.search,
-                ),
+                Text(entry.key),
+                Text(
+                  controller.userService.currentUser.value!.name,
+                  textAlign: TextAlign.left,
 
-                NormalButtonWidget(text: 'Search'),
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: AppColors.secondary,
+                  ),
+                ),
+                ListView.builder(
+                  itemCount: entry.value.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final data = entry.value;
+                    return Column(
+                      spacing: 10,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          spacing: 10,
+                          children: [
+                            AnimatedEmoji(
+                              controller.emojiData[data[index].mood]!,
+                              size: 45,
+                              // onLoaded: (Duration dd){},
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  DateFormat(
+                                    'HH:mm',
+                                  ).format(data[index].timestamp),
+                                  textAlign: TextAlign.left,
+
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Text(
+                                  textAlign: TextAlign.left,
+
+                                  data[index].mood,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        // Text(
+                        //   controller.userService.currentUser.value!.mood,
+                        //   style: Theme.of(context).textTheme.bodySmall,
+                        // ),
+                        // Text("Friend", style: Theme.of(context).textTheme.headlineMedium),
+                        // AnimatedEmoji(AnimatedEmojis.warmSmile, size: 45),
+
+                        // Text("Neutral"),
+                        VerticalDivider(),
+                      ],
+                    );
+                  },
+                ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    "You",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  AnimatedEmoji(AnimatedEmojis.angry, size: 45),
-                  Text("Happy"),
-                ],
-              ),
-              VerticalDivider(),
-              Column(
-                children: [
-                  Text(
-                    "Friend",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  AnimatedEmoji(AnimatedEmojis.warmSmile, size: 45),
-
-                  Text("Neutral"),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+        );
+      }).toList(),
     );
   }
 }
